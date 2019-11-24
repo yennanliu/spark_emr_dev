@@ -20,3 +20,4 @@ checkpointing
 checkpoints/
 derby.log
 metastore_db/
+config/aws_config.yml

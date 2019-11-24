@@ -5,7 +5,7 @@ import org.apache.spark._
 object emr_helloworld {
   def main(args: Array[String]): Unit = {
     //setup spark
-    val sc = new SparkContext(new SparkConf())
+    //val sc = new SparkContext(new SparkConf())
     //your algorithm
     val n = 10000000
     val count = sc.parallelize(1 to n).map { i =>
