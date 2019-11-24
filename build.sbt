@@ -19,12 +19,14 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-mllib" % "2.2.0",
   "com.databricks" %% "spark-csv" % "1.4.0",
   "com.amazonaws" % "aws-java-sdk" % "1.7.4",
-  "org.apache.hadoop" % "hadoop-aws" % "2.7.6",
+  "org.apache.hadoop" % "hadoop-aws" % "2.7.6"
 )
 
 conflictManager := ConflictManager.latestRevision
 
 //mainClass := Some("rdd.WordCount")
+
+mainClass := Some("EmrHelloworld.emr_helloworld")
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
