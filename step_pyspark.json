@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Sample AWS EMR Spark Job",
+    "Type":"CUSTOM_JAR",
+    "Jar":"command-runner.jar",
+    "Args":
+    [
+      "spark-submit",
+      "--deploy-mode", "cluster",
+      "--class", "ProcessData",
+      "s3://etl-spark-bucket/pyspark_script/spark_helloworld.py"
+    ],
+    "ActionOnFailure": "TERMINATE_CLUSTER"
+  }
+]
