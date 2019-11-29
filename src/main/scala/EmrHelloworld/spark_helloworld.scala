@@ -12,7 +12,6 @@ object spark_helloworld {
     val spark: SparkSession = SparkSession.builder
                                           .config(conf)
                                           .getOrCreate()
-
     // do stuff
     println("************")
     println("************")
