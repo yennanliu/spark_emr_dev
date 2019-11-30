@@ -1,4 +1,4 @@
-# EMR QUICK START COMMANDS 
+# CLI RUN EMR JOBS
 
 ### 1. Run a emr with dummy task (and terminate it when job completed/failed)
 
@@ -27,4 +27,13 @@ bash
 aws emr add-steps --cluster-id j-ON9Z8VHKC8FD \
     --steps Name=Spark,Jar=s3://eu-west-1.elasticmapreduce/libs/script-runner/script-runner.jar,Args=[/home/hadoop/spark/bin/spark-submit,--deploy-mode,cluster,s3://etl-spark-bucket/pyspark_script/spark_helloworld.py],ActionOnFailure=CONTINUE
 
+```
+
+# CLI RUN spark-submit JOB LOCAL 
+
+### 1. run spark hello world job
+
+```bash
+
+spark-submit --class EmrHelloworld.emr_helloworld spark_emr_dev/target/scala-2.11/spark_emr_dev-assembly-1.0.jar
 ```
