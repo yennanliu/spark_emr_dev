@@ -1,4 +1,6 @@
-# CLI RUN EMR JOBS
+# EMR QUICK START COMMANDS
+
+## Commands laucn EMR from local
 
 ### 1. Run a emr with dummy task (and terminate it when job completed/failed)
 
@@ -36,7 +38,22 @@ aws emr create-cluster \
 ### 3. Create a emr with scala jar script in s3 (and terminate it when job completed/failed)
 
 ```bash
-aws emr create-cluster --auto-scaling-role EMR_AutoScaling_DefaultRole --applications Name=Hadoop Name=Hive Name=Pig Name=Hue Name=Spark --ebs-root-volume-size 10 --ec2-attributes '{"KeyName":"yen_aws_yahoo_keypair","InstanceProfile":"EMR_EC2_DefaultRole","SubnetId":"subnet-0fe38d24","EmrManagedSlaveSecurityGroup":"sg-0a78143ccac876690","EmrManagedMasterSecurityGroup":"sg-03d310bc88ddb1633"}' --service-role EMR_DefaultRole --enable-debugging --release-label emr-5.28.0 --log-uri 's3n://aws-logs-437885434504-us-west-2/elasticmapreduce/' --steps '[{"Args":["spark-submit","--deploy-mode","cluster","--class","EmrHelloworld.emr_helloworld","s3://etl-spark-bucket/spark_jar/spark_emr_dev-assembly-1.0.jar"],"Type":"CUSTOM_JAR","ActionOnFailure":"TERMINATE_CLUSTER","Jar":"command-runner.jar","Properties":"","Name":"Spark 應用程式"}]' --name '我的叢集' --instance-groups '[{"InstanceCount":2,"EbsConfiguration":{"EbsBlockDeviceConfigs":[{"VolumeSpecification":{"SizeInGB":32,"VolumeType":"gp2"},"VolumesPerInstance":2}]},"InstanceGroupType":"CORE","InstanceType":"m5.xlarge","Name":"核心 - 2"},{"InstanceCount":1,"EbsConfiguration":{"EbsBlockDeviceConfigs":[{"VolumeSpecification":{"SizeInGB":32,"VolumeType":"gp2"},"VolumesPerInstance":2}]},"InstanceGroupType":"MASTER","InstanceType":"m5.xlarge","Name":"主節點 - 1"}]'  --auto-terminate --service-role EMR_DefaultRole --enable-debugging --name 'yen-emr-scala-jar' --scale-down-behavior TERMINATE_AT_TASK_COMPLETION --region us-west-2
+aws emr create-cluster \
+--auto-scaling-role EMR_AutoScaling_DefaultRole \
+--applications Name=Hadoop Name=Hive Name=Pig Name=Hue Name=Spark \
+--ebs-root-volume-size 10 \
+--ec2-attributes '{"KeyName":"yen_aws_yahoo_keypair","InstanceProfile":"EMR_EC2_DefaultRole","SubnetId":"subnet-0fe38d24","EmrManagedSlaveSecurityGroup":"sg-0a78143ccac876690","EmrManagedMasterSecurityGroup":"sg-03d310bc88ddb1633"}' --service-role EMR_DefaultRole \
+--enable-debugging \
+--release-label emr-5.28.0 \
+--log-uri 's3n://aws-logs-437885434504-us-west-2/elasticmapreduce/' --steps '[{"Args":["spark-submit","--deploy-mode","cluster","--class","EmrHelloworld.emr_helloworld","s3://etl-spark-bucket/spark_jar/spark_emr_dev-assembly-1.0.jar"],"Type":"CUSTOM_JAR","ActionOnFailure":"TERMINATE_CLUSTER","Jar":"command-runner.jar","Properties":"","Name":"Spark 應用程式"}]' \
+--name '我的叢集' \
+--instance-groups '[{"InstanceCount":2,"EbsConfiguration":{"EbsBlockDeviceConfigs":[{"VolumeSpecification":{"SizeInGB":32,"VolumeType":"gp2"},"VolumesPerInstance":2}]},"InstanceGroupType":"CORE","InstanceType":"m5.xlarge","Name":"核心 - 2"},{"InstanceCount":1,"EbsConfiguration":{"EbsBlockDeviceConfigs":[{"VolumeSpecification":{"SizeInGB":32,"VolumeType":"gp2"},"VolumesPerInstance":2}]},"InstanceGroupType":"MASTER","InstanceType":"m5.xlarge","Name":"主節點 - 1"}]'  \
+--auto-terminate \
+--service-role EMR_DefaultRole \
+--enable-debugging \
+--name 'yen-emr-scala-jar' \
+--scale-down-behavior TERMINATE_AT_TASK_COMPLETION \
+--region us-west-2
 ```
 
 ### 4.Submit a job to created emr ( emr id = j-ON9Z8VHKC8FD for example)
@@ -48,7 +65,7 @@ aws emr add-steps --cluster-id j-ON9Z8VHKC8FD \
 
 ```
 
-# CLI RUN spark-submit JOB LOCAL 
+## Commands laucn EMR inside emr
 
 ### 1. run spark hello world job
 
