@@ -2,7 +2,7 @@
 
 ## Commands laucn EMR from local
 
-### 1. Run a emr with dummy task (and terminate it when job completed/failed)
+### 1. Run an EMR with dummy task (and terminate it when job completed/failed)
 
 ```bash
 aws emr create-cluster \
@@ -16,7 +16,7 @@ aws emr create-cluster \
     --auto-terminate
 ```
 
-### 2. Create a emr with pyspark script in s3 (and terminate it when job completed/failed)
+### 2. Create an EMR with S3 pyspark  (and terminate it when job completed/failed)
 
 ```bash
  aws emr create-cluster \
@@ -35,7 +35,7 @@ aws emr create-cluster \
     --region us-west-2
  ```
 
-### 3. Create a emr with scala jar script in s3 (and terminate it when job completed/failed)
+### 3. Create an EMR with S3 scala jar (and terminate it when job completed/failed)
 
 ```bash
 aws emr create-cluster \
@@ -57,7 +57,7 @@ aws emr create-cluster \
     --region us-west-2
 ```
 
-### 4.Submit a job to created emr ( emr id = j-ON9Z8VHKC8FD for example)
+### 4.Submit a job to created EMR ( emr id = j-ON9Z8VHKC8FD for example)
 
 ```bash
 bash 
