@@ -17,7 +17,20 @@ aws emr create-cluster \
 ### 2. Create a emr with pyspark script in s3 (and terminate it when job completed/failed)
 
 ```bash
- aws emr create-cluster --applications Name=Hadoop Name=Spark --ec2-attributes '{"InstanceProfile":"EMR_EC2_DefaultRole","SubnetId":"subnet-ab8f8ee0","EmrManagedSlaveSecurityGroup":"sg-0a78143ccac876690","EmrManagedMasterSecurityGroup":"sg-03d310bc88ddb1633"}' --release-label emr-5.28.0 --log-uri 's3n://aws-logs-437885434504-us-west-2/elasticmapreduce/' --steps '[{"Args":["spark-submit","--deploy-mode","cluster","s3://etl-spark-bucket/pyspark_script/spark_helloworld.py"],"Type":"CUSTOM_JAR","ActionOnFailure":"TERMINATE_CLUSTER","Jar":"command-runner.jar","Properties":"","Name":"Spark 應用程式"}]' --instance-groups '[{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"m3.xlarge","Name":"Master Instance Group"},{"InstanceCount":2,"InstanceGroupType":"CORE","InstanceType":"m3.xlarge","Name":"Core Instance Group"}]' --configurations '[{"Classification":"spark","Properties":{}}]' --auto-terminate --service-role EMR_DefaultRole --enable-debugging --name 'yen-emr-10' --scale-down-behavior TERMINATE_AT_TASK_COMPLETION --region us-west-2
+ aws emr create-cluster \
+    --applications Name=Hadoop Name=Spark \
+    --ec2-attributes '{"InstanceProfile":"EMR_EC2_DefaultRole","SubnetId":"subnet-ab8f8ee0","EmrManagedSlaveSecurityGroup":"sg-0a78143ccac876690","EmrManagedMasterSecurityGroup":"sg-03d310bc88ddb1633"}' \
+    --release-label emr-5.28.0 \
+    --log-uri 's3n://aws-logs-437885434504-us-west-2/elasticmapreduce/' \
+    --steps '[{"Args":["spark-submit","--deploy-mode","cluster","s3://etl-spark-bucket/pyspark_script/spark_helloworld.py"],"Type":"CUSTOM_JAR","ActionOnFailure":"TERMINATE_CLUSTER","Jar":"command-runner.jar","Properties":"","Name":"Spark 應用程式"}]' \
+    --instance-groups '[{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"m3.xlarge","Name":"Master Instance Group"},{"InstanceCount":2,"InstanceGroupType":"CORE","InstanceType":"m3.xlarge","Name":"Core Instance Group"}]' \
+    --configurations '[{"Classification":"spark","Properties":{}}]' \
+    --auto-terminate \
+    --service-role EMR_DefaultRole \
+    --enable-debugging \
+    --name 'yen-emr-pyspark' \
+    --scale-down-behavior TERMINATE_AT_TASK_COMPLETION \
+    --region us-west-2
  ```
 
 ### 3. Create a emr with scala jar script in s3 (and terminate it when job completed/failed)
