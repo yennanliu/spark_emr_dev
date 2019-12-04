@@ -1,4 +1,4 @@
-import configparser
+#import configparser
 from datetime import datetime
 import os
 from pyspark.sql import SparkSession
@@ -10,7 +10,6 @@ from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, dat
 # config.read_file(open('config/aws.cfg'))
 # os.environ['AWS_ACCESS_KEY_ID']=config.get('AWS','AWS_ACCESS_KEY_ID')
 # os.environ['AWS_SECRET_ACCESS_KEY']=config.get('AWS','AWS_SECRET_ACCESS_KEY')
-
 
 def create_spark_session():
     spark = SparkSession \
@@ -32,9 +31,8 @@ def process_song_data(spark, input_data, output_data):
             
     """
     # get filepath to song data file
-    #song_data = input_data + 'song_data/*/*/*/*.json'
     song_data = input_data + 'song-data/*/*/*/*.json'
-    #song_data = input_data + 'song-data/A/A/A/TRAAAAK128F9318786.json'
+    #song_data = input_data + 'song-data/A/A/A/*.json'
     
     # read song data file
     df = spark.read.json(song_data)
