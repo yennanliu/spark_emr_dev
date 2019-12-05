@@ -73,4 +73,10 @@ aws emr add-steps --cluster-id j-ON9Z8VHKC8FD \
 ```bash
 
 spark-submit --class EmrHelloworld.emr_helloworld spark_emr_dev/target/scala-2.11/spark_emr_dev-assembly-1.0.jar
+
 ```
+
+### 2. Run a spark song ETL job 
+```bash
+ bash /usr/lib/hadoop/bin/hadoop jar /var/lib/aws/emr/step-runner/hadoop-jars/command-runner.jar spark-submit --deploy-mode cluster s3://etl-spark-bucket/pyspark_script/sparkify_song_etl.py
+ ```
