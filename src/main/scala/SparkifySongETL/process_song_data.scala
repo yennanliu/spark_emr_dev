@@ -15,7 +15,7 @@ object process_song_data {
                                           .getOrCreate()
 
     var input_data = "s3a://sparkify-song-data/song-data" 
-    var output_data = "s3a://sparkify-song-data/scala_etl_output" 
+    var output_data = "s3a://sparkify-song-data/scala_etl_output/process_song_data" 
     //var song_data = input_data +  "/*/*/*/*.json"
     var song_data = input_data +  "/A/A/A/*.json"
 
