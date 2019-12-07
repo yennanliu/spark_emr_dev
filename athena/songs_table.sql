@@ -1,13 +1,17 @@
 CREATE EXTERNAL TABLE IF NOT EXISTS sparkify_song.songs_table (
   `song_id` string,
+  `num_songs` string,
   `title` string,
-  `artist_id` string,
+  `artist_name` string,
+  `artist_latitude` double,
   `year` string,
-  `duration` DOUBLE
-
+  `duration` double,
+  `artist_id` string,
+  `artist_longitude` double,
+  `artist_location` string 
 )
-ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
 WITH SERDEPROPERTIES (
   'serialization.format' = '1'
-) LOCATION 's3://sparkify-song-data/etl_output/songs_table/'
+) LOCATION 's3://sparkify-song-data/song-data/'
 TBLPROPERTIES ('has_encrypted_data'='false');
