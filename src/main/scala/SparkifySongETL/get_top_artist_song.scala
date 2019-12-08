@@ -25,11 +25,11 @@ object get_top_artist_song {
 
     var top_artist_table = spark.sql("""
                             SELECT 
-                            arsist, 
-                            count(*) as arsist_count
+                            artist, 
+                            count(*) as artist_count
                             FROM log_data_table log
                             WHERE song IS NOT NULL
-                            AND arsist IS NOT NULL
+                            AND artist IS NOT NULL
                             GROUP BY 1 
                             ORDER BY 2 DESC 
                             LIMIT 1000
@@ -41,7 +41,7 @@ object get_top_artist_song {
                             count(*) as song_count
                             FROM log_data_table log
                             WHERE song IS NOT NULL
-                            AND arsist IS NOT NULL
+                            AND artist IS NOT NULL
                             GROUP BY 1 
                             ORDER BY 2 DESC 
                             LIMIT 1000
