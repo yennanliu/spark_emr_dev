@@ -9,7 +9,7 @@ object process_user_songplay {
   def main(args: Array[String]): Unit = {
     //setup spark
     val conf = new SparkConf().setMaster("local[*]")
-                              .setAppName("process_song_data")
+                              .setAppName("process_user_songplay")
     val spark: SparkSession = SparkSession.builder
                                           .config(conf)
                                           .getOrCreate()
@@ -19,7 +19,7 @@ object process_user_songplay {
     var output_data = "s3a://sparkify-song-data/scala_etl_output/process_user_songplay" 
     
     //var song_data = input_data +  "/*/*/*/*.json"
-    var song_data = input_song_data +  "/A/A/A/*.json"
+    var song_data = input_song_data +  "/A/A/*/*.json"
     var log_data = input_log_data +  "/2018/11/*.json"
 
     print (">>>>>> load from S3")

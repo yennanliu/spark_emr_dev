@@ -14,7 +14,7 @@ object process_log_data {
                                           .config(conf)
                                           .getOrCreate()
 
-    var input_data = "s3a://sparkify-song-data//log-data" 
+    var input_data = "s3a://sparkify-song-data/log-data" 
     var output_data = "s3a://sparkify-song-data/scala_etl_output/process_log_data" 
     //var log_data = input_data +  "/*/*/*/*.json"
     var log_data = input_data +  "/2018/11/*.json"
