@@ -23,3 +23,5 @@ metastore_db/
 config/aws_config.yml
 aws.config
 aws.cfg
+doc/emr-mgmt.pdf
+doc/emr-mgmt_11.pdf
