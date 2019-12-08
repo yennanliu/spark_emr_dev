@@ -10,7 +10,7 @@ import java.io.File
 object emr_hive_IO_demo {
   def main(args: Array[String]): Unit = {
     //setup spark
-    val conf = new SparkConf().setAppName("Spark emr Hello world")
+    val conf = new SparkConf().setAppName("Spark emr Hello world").setMaster("local[*]")
     val warehouseLocation = new File("spark-warehouse").getAbsolutePath
     val spark = SparkSession
                 .builder()
