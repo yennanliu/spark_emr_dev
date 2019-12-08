@@ -1,3 +1,5 @@
+package unittest
+
 import collection.mutable.Stack
 import org.scalatest._
 import org.scalatest.FlatSpec
