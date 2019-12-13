@@ -40,7 +40,6 @@ object get_cleaned_log_data {
     print (">>>>>> write to S3")
     logs_table.write
                .mode("overwrite")
-               .partitionBy("userid", "method")
                .parquet(output_data)
     spark.stop()
 
