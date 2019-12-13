@@ -2,7 +2,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS sparkify_song.processed_user_listened_artist
   `userid` string,
   `artist_array` array<string> 
 )
-ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
 WITH SERDEPROPERTIES (
   'serialization.format' = ',',
   'field.delim' = ','
