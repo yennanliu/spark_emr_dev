@@ -32,8 +32,8 @@ object get_splitted_user_log {
     print (">>>>>> write to S3")
     logs_table.write
                .mode("overwrite")
+               .partitionBy("userid")
                .parquet(output_data)
-               partitionBy("userid")
     spark.stop()
 
   }
