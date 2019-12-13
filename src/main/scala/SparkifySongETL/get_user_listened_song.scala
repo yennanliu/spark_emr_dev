@@ -43,9 +43,7 @@ object get_user_listened_song {
     user_id_list.createOrReplaceTempView("user_id_list")
     listened_log.createOrReplaceTempView("listened_log")
 
-    // currently I can't find the "songid" at the log table,
-    // so here I use listented astist instead of songid
-    // will do a fix in the future
+    // currently I can't find the "songid" at the log table, so here I use listented astist instead of songid. will do a fix in the future
     var listen_history = spark.sql("""
                             SELECT
                             u.userid as userid,
@@ -58,11 +56,10 @@ object get_user_listened_song {
                             u.userid = l.userid 
                         """)
     // RDD 
-
-    // df 
+    // DF 
     val user_listened = listen_history.groupBy("userId")                        
-                      .agg(collect_list("artist")
-                      .alias("listed_artist"))
+                        .agg(collect_list("artist")
+                        .alias("listed_artist"))
 
     user_listened.show()
     print (">>>>>> write to S3")
