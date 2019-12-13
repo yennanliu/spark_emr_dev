@@ -36,7 +36,7 @@ object get_user_profile {
                                 logT.userAgent as user_agent,
                                 logT.auth as last_auth, 
                                 max(ts) as last_ts,
-                                max(registration) as registration
+                                max(registration) as last_registration
                                 FROM log_data_table logT
                                 GROUP BY 1,2,3,4,5,6
                             """)
