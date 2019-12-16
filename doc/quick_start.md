@@ -1,6 +1,6 @@
 # EMR QUICK START COMMANDS
 
-## Commands laucn EMR from local
+## Commands launch EMR from `local`
 
 ### 1. Run an EMR with dummy task (and terminate it when job completed/failed)
 
@@ -57,7 +57,7 @@ aws emr create-cluster \
     --region us-west-2
 ```
 
-### 4.Submit a job to created EMR ( emr id = j-ON9Z8VHKC8FD for example)
+### 4.Submit a job and launch EMR ( emr id = j-ON9Z8VHKC8FD for example)
 
 ```bash
 bash 
@@ -66,7 +66,7 @@ aws emr add-steps --cluster-id j-ON9Z8VHKC8FD \
 
 ```
 
-## Commands laucn EMR inside emr
+## Commands launch EMR `inside emr`
 
 ### 1. run spark hello world job
 
@@ -76,7 +76,7 @@ spark-submit --class EmrHelloworld.emr_helloworld spark_emr_dev/target/scala-2.1
 
 ```
 
-### 2. Run a spark song ETL job 
+### 2. Run a spark sparkify_song_etl job 
 ```bash
  bash /usr/lib/hadoop/bin/hadoop jar /var/lib/aws/emr/step-runner/hadoop-jars/command-runner.jar spark-submit --deploy-mode cluster s3://etl-spark-bucket/pyspark_script/sparkify_song_etl.py
  ```
