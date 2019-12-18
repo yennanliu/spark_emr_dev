@@ -22,7 +22,7 @@ object GetTaxiValueZones {
       lazy val session =
           SparkSession.builder
             .appName("GetTaxiValueZones")
-            .config("spark.master", "local")
+            .config("spark.master", "local[*]")
             .getOrCreate()
 
       try {
@@ -49,9 +49,16 @@ object GetTaxiValueZones {
 
         sparkSession.conf.set("spark.sql.session.timeZone", "America/New_York")
 
-        var yello_trip_data = "s3a://nyc-tlc-taxi/trip_data/yellow_trip" 
-        var green_trip_data = "s3a://nyc-tlc-taxi/trip_data/green_trip"
-        var fhv_trip_data = "s3a://nyc-tlc-taxi/trip_data/fhv_trip"
+        // all dataset 
+        // var yellow_trip_data = "s3a://nyc-tlc-taxi/trip_data/yellow_trip" 
+        // var green_trip_data = "s3a://nyc-tlc-taxi/trip_data/green_trip"
+        // var fhv_trip_data = "s3a://nyc-tlc-taxi/trip_data/fhv_trip"
+        var zone_data = "s3a://nyc-tlc-taxi/zone/taxi+_zone_lookup.csv"
+
+        // sample dataset
+        var yellow_trip_data = "s3a://nyc-tlc-taxi/trip_data/yellow_trip/dt=2016-01/*.csv" 
+        var green_trip_data = "s3a://nyc-tlc-taxi/trip_data/green_trip/dt=2016-01/*.csv"
+        var fhv_trip_data = "s3a://nyc-tlc-taxi/trip_data/fhv_trip/dt=2016-01/*.csv"
         var outout_data = "s3a://nyc-tlc-taxi/scala_etl_output/GetTaxiValueZones"
 
         val yellowEvents = sparkSession.read
@@ -60,7 +67,7 @@ object GetTaxiValueZones {
           .option("enforceSchema", "false")
           .option("timeStampFormat", "yyyy-MM-dd HH:mm:ss")
           .option("columnNameOfCorruptRecord", "error")
-          .csv(yello_trip_data)  //.csv(yellow: _*)
+          .csv(yellow_trip_data)  //.csv(yellow: _*)
           .filter(col("tpep_pickup_datetime").gt("2017"))
           .filter(col("tpep_pickup_datetime").lt("2019"))
           .withColumn("duration", unix_timestamp($"tpep_dropoff_datetime").minus(unix_timestamp($"tpep_pickup_datetime")))
@@ -77,7 +84,8 @@ object GetTaxiValueZones {
           .option("columnNameOfCorruptRecord", "error")
           .csv(green_trip_data) //.csv(green: _*)
           .filter(col("lpep_pickup_datetime").gt("2017"))
-          .filter(col("lpep_pickup_datetime").lt("2019"))          .withColumn("duration", unix_timestamp($"lpep_dropoff_datetime").minus(unix_timestamp($"lpep_pickup_datetime")))
+          .filter(col("lpep_pickup_datetime").lt("2019"))
+          .withColumn("duration", unix_timestamp($"lpep_dropoff_datetime").minus(unix_timestamp($"lpep_pickup_datetime")))
           .withColumn("minute_rate",$"total_amount".divide($"duration") * 60)
           .withColumnRenamed("lpep_pickup_datetime","pickup_datetime")
           .select("pickup_datetime","minute_rate","PULocationID","total_amount")
@@ -88,7 +96,7 @@ object GetTaxiValueZones {
             .option("inferSchema", "true")
             .option("enforceSchema", "false")
             .option("columnNameOfCorruptRecord", "error")
-            .csv("data/taxi+_zone_lookup.csv") //.csv(zones: _*)
+            .csv(zone_data) //.csv(zones: _*)
 
         val allEventsWithZone = greenEvents
           .union(yellowEvents)
