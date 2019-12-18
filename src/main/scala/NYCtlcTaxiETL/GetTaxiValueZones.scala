@@ -78,20 +78,20 @@ object GetTaxiValueZones {
           //.withColumn("taxiColor",lit("yellow"))
 
 
-        val greenEvents = sparkSession.read
-          .option("header","true")
-          .option("inferSchema", "true")
-          .option("enforceSchema", "false")
-          .option("timeStampFormat", "yyyy-MM-dd HH:mm:ss")
-          .option("columnNameOfCorruptRecord", "error")
-          .csv(green_trip_data)  //.csv(yellow: _*)
-          .filter(col("Trip_Pickup_DateTime").gt("2017"))
-          .filter(col("Trip_Dropoff_DateTime").lt("2019"))
-          .withColumn("duration", unix_timestamp($"Trip_Dropoff_DateTime").minus(unix_timestamp($"Trip_Pickup_DateTime")))
-          .withColumn("minute_rate",$"Trip_Distance".divide($"duration") * 60)
-          .withColumnRenamed("Trip_Pickup_DateTime","pickup_datetime")
-          .select("pickup_datetime","minute_rate","Total_Amt") //.select("pickup_datetime","minute_rate","PULocationID","Total_Amt")
-          .limit(100)
+        // val greenEvents = sparkSession.read
+        //   .option("header","true")
+        //   .option("inferSchema", "true")
+        //   .option("enforceSchema", "false")
+        //   .option("timeStampFormat", "yyyy-MM-dd HH:mm:ss")
+        //   .option("columnNameOfCorruptRecord", "error")
+        //   .csv(green_trip_data)  //.csv(yellow: _*)
+        //   .filter(col("Trip_Pickup_DateTime").gt("2017"))
+        //   .filter(col("Trip_Dropoff_DateTime").lt("2019"))
+        //   .withColumn("duration", unix_timestamp($"Trip_Dropoff_DateTime").minus(unix_timestamp($"Trip_Pickup_DateTime")))
+        //   .withColumn("minute_rate",$"Trip_Distance".divide($"duration") * 60)
+        //   .withColumnRenamed("Trip_Pickup_DateTime","pickup_datetime")
+        //   .select("pickup_datetime","minute_rate","Total_Amt") //.select("pickup_datetime","minute_rate","PULocationID","Total_Amt")
+        //   .limit(100)
           //.withColumn("taxiColor",lit("green"))
 
         // val zonesInfo = sparkSession.read
@@ -109,11 +109,12 @@ object GetTaxiValueZones {
         //allEventsWithZone.cache
 
         yellowEvents.show()
-        greenEvents.show()
+        //greenEvents.show()
 
-        val allEvents = greenEvents.union(yellowEvents)
-              .select("pickup_datetime","minute_rate")
+        // val allEvents = greenEvents.union(yellowEvents)
+        //       .select("pickup_datetime","minute_rate")
 
+        var allEvents = yellowEvents
         allEvents.cache
 
         // val zoneAttractiveness = allEventsWithZone
