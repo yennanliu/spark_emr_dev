@@ -56,9 +56,9 @@ object GetTaxiValueZones {
         var zone_data = "s3a://nyc-tlc-taxi/zone/taxi+_zone_lookup.csv"
 
         // sample dataset
-        var yellow_trip_data = "s3a://nyc-tlc-taxi/yellow_trip/dt=2009-01/*.csv" 
-        var green_trip_data = "s3a://nyc-tlc-taxi/green_trip/dt=2009-01/*.csv"
-        var fhv_trip_data = "s3a://nyc-tlc-taxi/fhv_trip/dt=2009-01/*.csv"
+        var yellow_trip_data = "s3a://nyc-tlc-taxi/yellow_trip/dt=2014-01/*.csv" 
+        var green_trip_data = "s3a://nyc-tlc-taxi/green_trip/dt=2014-01/*.csv"
+        var fhv_trip_data = "s3a://nyc-tlc-taxi/fhv_trip/dt=2014-01/*.csv"
         var outout_data = "s3a://nyc-tlc-taxi/scala_etl_output/GetTaxiValueZones"
 
         val yellowEvents = sparkSession.read
@@ -68,13 +68,15 @@ object GetTaxiValueZones {
           .option("timeStampFormat", "yyyy-MM-dd HH:mm:ss")
           .option("columnNameOfCorruptRecord", "error")
           .csv(yellow_trip_data)  //.csv(yellow: _*)
-          .filter(col("tpep_pickup_datetime").gt("2017"))
-          .filter(col("tpep_pickup_datetime").lt("2019"))
-          .withColumn("duration", unix_timestamp($"tpep_dropoff_datetime").minus(unix_timestamp($"tpep_pickup_datetime")))
-          .withColumn("minute_rate",$"total_amount".divide($"duration") * 60)
-          .withColumnRenamed("tpep_pickup_datetime","pickup_datetime")
-          .select("pickup_datetime","minute_rate","PULocationID","total_amount")
-          .withColumn("taxiColor",lit("yellow"))
+          .filter(col("Trip_Pickup_DateTime").gt("2017"))
+          .filter(col("Trip_Dropoff_DateTime").lt("2019"))
+          .withColumn("duration", unix_timestamp($"Trip_Dropoff_DateTime").minus(unix_timestamp($"Trip_Pickup_DateTime")))
+          .withColumn("minute_rate",$"Trip_Distance".divide($"duration") * 60)
+          .withColumnRenamed("Trip_Pickup_DateTime","pickup_datetime")
+          .select("pickup_datetime","minute_rate","Total_Amt") //.select("pickup_datetime","minute_rate","PULocationID","Total_Amt")
+          .limit(100)
+          //.withColumn("taxiColor",lit("yellow"))
+
 
         val greenEvents = sparkSession.read
           .option("header","true")
@@ -82,61 +84,79 @@ object GetTaxiValueZones {
           .option("enforceSchema", "false")
           .option("timeStampFormat", "yyyy-MM-dd HH:mm:ss")
           .option("columnNameOfCorruptRecord", "error")
-          .csv(green_trip_data) //.csv(green: _*)
-          .filter(col("lpep_pickup_datetime").gt("2017"))
-          .filter(col("lpep_pickup_datetime").lt("2019"))
-          .withColumn("duration", unix_timestamp($"lpep_dropoff_datetime").minus(unix_timestamp($"lpep_pickup_datetime")))
-          .withColumn("minute_rate",$"total_amount".divide($"duration") * 60)
-          .withColumnRenamed("lpep_pickup_datetime","pickup_datetime")
-          .select("pickup_datetime","minute_rate","PULocationID","total_amount")
-          .withColumn("taxiColor",lit("green"))
+          .csv(green_trip_data)  //.csv(yellow: _*)
+          .filter(col("Trip_Pickup_DateTime").gt("2017"))
+          .filter(col("Trip_Dropoff_DateTime").lt("2019"))
+          .withColumn("duration", unix_timestamp($"Trip_Dropoff_DateTime").minus(unix_timestamp($"Trip_Pickup_DateTime")))
+          .withColumn("minute_rate",$"Trip_Distance".divide($"duration") * 60)
+          .withColumnRenamed("Trip_Pickup_DateTime","pickup_datetime")
+          .select("pickup_datetime","minute_rate","Total_Amt") //.select("pickup_datetime","minute_rate","PULocationID","Total_Amt")
+          .limit(100)
+          //.withColumn("taxiColor",lit("green"))
 
-        val zonesInfo = sparkSession.read
-            .option("header","true")
-            .option("inferSchema", "true")
-            .option("enforceSchema", "false")
-            .option("columnNameOfCorruptRecord", "error")
-            .csv(zone_data) //.csv(zones: _*)
+        // val zonesInfo = sparkSession.read
+        //     .option("header","true")
+        //     .option("inferSchema", "true")
+        //     .option("enforceSchema", "false")
+        //     .option("columnNameOfCorruptRecord", "error")
+        //     .csv(zone_data) //.csv(zones: _*)
 
-        val allEventsWithZone = greenEvents
-          .union(yellowEvents)
-          .join(zonesInfo,$"PULocationID" === $"LocationID")
-          .select("pickup_datetime","minute_rate","taxiColor","LocationID","Borough", "Zone")
+        // val allEventsWithZone = greenEvents
+        //   .union(yellowEvents)
+        //   .join(zonesInfo,$"PULocationID" === $"LocationID")
+        //   .select("pickup_datetime","minute_rate","taxiColor","LocationID","Borough", "Zone")
 
-        allEventsWithZone.cache
+        //allEventsWithZone.cache
 
-        val zoneAttractiveness = allEventsWithZone
-          .groupBy($"LocationID", date_trunc("hour",$"pickup_datetime") as "pickup_hour")
-          .pivot("taxiColor",Seq("yellow", "green"))
-          .agg("minute_rate" -> "avg", "minute_rate" -> "count")
-          .withColumnRenamed("yellow_avg(minute_rate)","yellow_avg_minute_rate")
-          .withColumnRenamed("yellow_count(minute_rate)","yellow_count")
-          .withColumnRenamed("green_avg(minute_rate)","green_avg_minute_rate")
-          .withColumnRenamed("green_count(minute_rate)","green_count")
+        yellowEvents.show()
+        greenEvents.show()
+
+        val allEvents = greenEvents.union(yellowEvents)
+              .select("pickup_datetime","minute_rate")
+
+        allEvents.cache
+
+        // val zoneAttractiveness = allEventsWithZone
+        //   .groupBy($"LocationID", date_trunc("hour",$"pickup_datetime") as "pickup_hour")
+        //   .pivot("taxiColor",Seq("yellow", "green"))
+        //   .agg("minute_rate" -> "avg", "minute_rate" -> "count")
+        //   .withColumnRenamed("yellow_avg(minute_rate)","yellow_avg_minute_rate")
+        //   .withColumnRenamed("yellow_count(minute_rate)","yellow_count")
+        //   .withColumnRenamed("green_avg(minute_rate)","green_avg_minute_rate")
+        //   .withColumnRenamed("green_count(minute_rate)","green_count")
 
         print (">>>>>>>>>> SAVE OUTPUT  (parquet)")
 
-        allEventsWithZone.show()
-        zoneAttractiveness.show()
+        // allEventsWithZone.show()
+        // zoneAttractiveness.show()
 
-        val rawQuery = allEventsWithZone
-          .withColumn("year", year($"pickup_datetime"))
-          .withColumn("month", month($"pickup_datetime"))
-          .withColumn("day", dayofmonth($"pickup_datetime"))
-          .repartition($"year",$"month")
-          .sortWithinPartitions("day")
-          .write
-          .mode("OVERWRITE")
-          .partitionBy("year","month")
-          .parquet(outout_data + "/allEventsWithZone")
+        allEvents.show()
 
-        val aggregateQuery = zoneAttractiveness
-          .repartition(1)
-          .sortWithinPartitions($"pickup_hour")
-          .write
-          .mode("OVERWRITE")
-          .partitionBy("LocationID")
-          .parquet(outout_data + "/zoneAttractiveness")
+        allEvents.repartition(1)
+        .sortWithinPartitions($"pickup_hour")
+        .write
+        .mode("OVERWRITE")
+        .partitionBy("pickup_datetime")
+        .parquet(outout_data + "/allEvents")
+
+        // val rawQuery = allEventsWithZone
+        //   .withColumn("year", year($"pickup_datetime"))
+        //   .withColumn("month", month($"pickup_datetime"))
+        //   .withColumn("day", dayofmonth($"pickup_datetime"))
+        //   .repartition($"year",$"month")
+        //   .sortWithinPartitions("day")
+        //   .write
+        //   .mode("OVERWRITE")
+        //   .partitionBy("year","month")
+        //   .parquet(outout_data + "/allEventsWithZone")
+
+        // val aggregateQuery = zoneAttractiveness
+        //   .repartition(1)
+        //   .sortWithinPartitions($"pickup_hour")
+        //   .write
+        //   .mode("OVERWRITE")
+        //   .partitionBy("LocationID")
+        //   .parquet(outout_data + "/zoneAttractiveness")
     }
   
 }
