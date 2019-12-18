@@ -1,10 +1,10 @@
 CREATE EXTERNAL TABLE IF NOT EXISTS sparkify_song.songs_table (
   `song_id` string,
-  `num_songs` string,
+  `num_songs` integer,
   `title` string,
   `artist_name` string,
   `artist_latitude` double,
-  `year` string,
+  `year` integer,
   `duration` double,
   `artist_id` string,
   `artist_longitude` double,
