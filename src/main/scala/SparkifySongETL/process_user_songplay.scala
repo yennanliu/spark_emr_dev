@@ -47,7 +47,7 @@ object process_user_songplay {
                                 FROM log_data_table logT
                                 JOIN song_data_table songT on logT.artist = songT.artist_name and logT.song = songT.title
                             """)
-
+    songplays_table.show()
     print (">>>>>> write to S3")
     songplays_table.write
                    .mode("overwrite")
