@@ -17,22 +17,20 @@ for s3_file in $s3_files;
        then   
          echo $s3_file
          to_file=$(echo $s3_file | cut -d " "  -f 4 | cut -d "_" -f 3 | cut -d "." -f 1)
-         #echo $to_file
          echo "copy" $from_bucket/$s3_file "to" $to_yellow_bucket/dt=$to_file/$s3_file 
          #aws s3 cp $from_bucket/$s3_file $to_bucket/dt=$to_file/$s3_file
+    
     elif [[ $s3_file =~ ^green_tripdata ]] 
         then  
-          #continue
           to_file=$(echo $s3_file | cut -d " "  -f 4 | cut -d "_" -f 3 | cut -d "." -f 1)
-          echo "copy" $from_bucket/$s3_file "to" $to_green_bucket/dt=$to_file/$s3_file 
-          #echo $s3_file
+          echo "copy" $from_bucket/$s3_file "to" $to_green_bucket/dt=$to_file/$s3_file
+          #aws s3 cp $from_bucket/$s3_file $to_bucket/dt=$to_file/$s3_file 
 
     elif [[ $s3_file =~ ^fhv_tripdata ]] 
         then  
-          #continue 
           to_file=$(echo $s3_file | cut -d " "  -f 4 | cut -d "_" -f 3 | cut -d "." -f 1)
           echo "copy" $from_bucket/$s3_file "to" $to_fhv_bucket/dt=$to_file/$s3_file 
-          #echo $s3_file
+          #aws s3 cp $from_bucket/$s3_file $to_bucket/dt=$to_file/$s3_file
     else 
         continue 
     fi 
