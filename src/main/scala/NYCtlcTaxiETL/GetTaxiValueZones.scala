@@ -50,15 +50,15 @@ object GetTaxiValueZones {
         sparkSession.conf.set("spark.sql.session.timeZone", "America/New_York")
 
         // all dataset 
-        // var yellow_trip_data = "s3a://nyc-tlc-taxi/trip_data/yellow_trip" 
-        // var green_trip_data = "s3a://nyc-tlc-taxi/trip_data/green_trip"
-        // var fhv_trip_data = "s3a://nyc-tlc-taxi/trip_data/fhv_trip"
+        // var yellow_trip_data = "s3a://nyc-tlc-taxi/yellow_trip" 
+        // var green_trip_data = "s3a://nyc-tlc-taxi/green_trip"
+        // var fhv_trip_data = "s3a://nyc-tlc-taxi/fhv_trip"
         var zone_data = "s3a://nyc-tlc-taxi/zone/taxi+_zone_lookup.csv"
 
         // sample dataset
-        var yellow_trip_data = "s3a://nyc-tlc-taxi/trip_data/yellow_trip/dt=2016-01/*.csv" 
-        var green_trip_data = "s3a://nyc-tlc-taxi/trip_data/green_trip/dt=2016-01/*.csv"
-        var fhv_trip_data = "s3a://nyc-tlc-taxi/trip_data/fhv_trip/dt=2016-01/*.csv"
+        var yellow_trip_data = "s3a://nyc-tlc-taxi/yellow_trip/dt=2009-01/*.csv" 
+        var green_trip_data = "s3a://nyc-tlc-taxi/green_trip/dt=2009-01/*.csv"
+        var fhv_trip_data = "s3a://nyc-tlc-taxi/fhv_trip/dt=2009-01/*.csv"
         var outout_data = "s3a://nyc-tlc-taxi/scala_etl_output/GetTaxiValueZones"
 
         val yellowEvents = sparkSession.read
