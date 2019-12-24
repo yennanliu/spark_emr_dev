@@ -14,12 +14,12 @@ object PreProcessYellowTaxiTrip {
 
     def main(args: Array[String]) {
 
-      logger.setLevel(Level.INFO)
-      lazy val session =
-          SparkSession.builder
-            .appName("PreProcessYellowTaxiTrip")
-            .config("spark.master", "local[*]")
-            .getOrCreate()
+      // logger.setLevel(Level.INFO)
+      // lazy val session =
+      //     SparkSession.builder
+      //       .appName("PreProcessYellowTaxiTrip")
+      //       .config("spark.master", "local[*]")
+      //       .getOrCreate()
 
       try {
         // runJob(sparkSession = session,
@@ -28,8 +28,8 @@ object PreProcessYellowTaxiTrip {
         //       zones = args(2).split(",").toList,
         //       target = args(3)
         //       )
-        runJob(sparkSession = session )
-        session.stop()
+        runJob()
+        //session.stop()
         } catch {
             case ex: Exception =>
               logger.error(ex.getMessage)
@@ -37,16 +37,16 @@ object PreProcessYellowTaxiTrip {
         }
     }
 
-    def runJob(sparkSession :SparkSession) = {
+    def runJob() = {
 
         logger.info("Execution started")
 
-        import sparkSession.implicits._
+        //import sparkSession.implicits._
 
-        sparkSession.conf.set("spark.sql.session.timeZone", "America/New_York")
+        //sparkSession.conf.set("spark.sql.session.timeZone", "America/New_York")
 
         // init sqlContext
-        val conf = new SparkConf().setAppName("PreProcessYellowTaxiTrip")
+        val conf = new SparkConf().setAppName("PreProcessYellowTaxiTrip").setMaster("local[*]")
         val sc = new SparkContext(conf)
         val sqlContext = new org.apache.spark.sql.SQLContext(sc)
         import sqlContext.implicits._
