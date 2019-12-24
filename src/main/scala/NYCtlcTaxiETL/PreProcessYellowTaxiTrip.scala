@@ -254,9 +254,9 @@ object PreProcessYellowTaxiTrip {
         sourceDF
     }
 
-    /******************************
-    //Main process  : Process data, save as parquet
-    ******************************/
+    /**********************************************
+    // Main process  : Process data, save as parquet
+    ***********************************************/
     //for (j <- 2009 to 2017)
     for (j <- 2016 to 2017)
       { 
@@ -265,8 +265,13 @@ object PreProcessYellowTaxiTrip {
         {
           //Source path  
           //val srcDataFile= srcDataDirRoot + "year=" + j + "/month=" +  "%02d".format(i) + "/type=yellow/yellow_tripdata_" + j + "-" + "%02d".format(i) + ".csv"
-          val srcDataFile= srcDataDirRoot  + j + "-" +  "%02d".format(i) + "yellow_tripdata_" + j + "-" + "%02d".format(i) + ".csv"
+          //val srcDataFile= srcDataDirRoot  + j + "-" +  "%02d".format(i) + "yellow_tripdata_" + j + "-" + "%02d".format(i) + ".csv"
+          val srcDataFile= srcDataDirRoot  + "dt=" + j + "-" +  "%02d".format(i) + "/" + "yellow_tripdata_" + j + "-" + "%02d".format(i) + ".csv"
           
+          // s3a://nyc-tlc-taxi/yellow_trip/2016-01yellow_tripdata_2016-01.csv
+          // "s3a://nyc-tlc-taxi/yellow_trip/dt=2014-01/*.csv"
+
+          println("srcDataFile" + srcDataFile)
           println("Processing the yellow taxi data for year=" + j + ", month=" + i + " at " + Calendar.getInstance().getTime())
           println("...............")
           
@@ -296,7 +301,9 @@ object PreProcessYellowTaxiTrip {
                     .format("delta")
                     .mode("append")
                     .partitionBy("trip_year","trip_month")
-                    .save(outout_data)   
+                    .save(outout_data) 
+
+          //sc.stop()  
         }
       }
 
