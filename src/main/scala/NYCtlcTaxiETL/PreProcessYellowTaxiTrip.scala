@@ -298,7 +298,6 @@ object PreProcessYellowTaxiTrip {
           //Write parquet output, calling function to calculate number of partition files
           taxiCanonicalDF
                     .write
-                    .format("delta")
                     .mode("append")
                     .partitionBy("trip_year","trip_month")
                     .save(outout_data) 
