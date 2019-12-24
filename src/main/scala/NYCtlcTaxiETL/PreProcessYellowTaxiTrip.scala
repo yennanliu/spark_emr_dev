@@ -302,7 +302,7 @@ object PreProcessYellowTaxiTrip {
                     .partitionBy("trip_year","trip_month")
                     .save(outout_data) 
 
-          //sc.stop()  
+          sc.stop()  
         }
       }
 
