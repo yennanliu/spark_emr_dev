@@ -64,7 +64,7 @@ object PreProcessGreenTaxiTrip {
         var outout_data = "s3a://nyc-tlc-taxi/scala_etl_output/PreProcessYellowTaxiTrip"
 
         // ETL data 
-        val srcDataDirRoot = "s3a://nyc-tlc-taxi/gellow_trip/" 
+        val srcDataDirRoot = "s3a://nyc-tlc-taxi/green_trip/" 
         val destDataDirRoot = "s3a://nyc-tlc-taxi/scala_etl_output/PreProcessGreenTaxiTrip/"
 
         //Canonical ordered column list for yellow taxi across years to homogenize schema
