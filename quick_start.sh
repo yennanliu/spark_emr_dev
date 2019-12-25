@@ -4,6 +4,7 @@ quick_start() {
     echo ""
 
     echo "install_sbt_at_emr : " "bash quick_start.sh  install_sbt_at_emr"
+    echo "install_git_at_emr : " "bash quick_start.sh  install_git_at_emr"
     echo "run_sbt_test       : " "bash quick_start.sh  run_sbt_test"
     echo "run_sbt_compile    : " "bash quick_start.sh  run_sbt_compile"
     echo "run_sbt_run        : " "bash quick_start.sh  run_sbt_run"
@@ -34,18 +35,18 @@ install_sbt_at_emr() {
     set -e
 }
 
-install_java(){
-  set +e
-  if [ -n `which java` ]; then 
-  echo 'java install OK'
-  which java
-  java -version  
-  else 
-  echo 'No java installed, please install it for running spark'
-  echo 'install java 8 OpenJDK via apt...'
-  apt install openjdk-8-jdk
-  fi 
-  set -e 
+
+install_git_at_emr(){
+
+    set +e
+    sudo yum install -y \
+      git \
+      autoconf-2.69-11.9.amzn1.noarch \
+      automake-1.13.4-3.15.amzn1.noarch \
+      protobuf-compiler \
+      protobuf \
+      protobuf-devel
+    set -e
 
 }
 
