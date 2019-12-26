@@ -39,7 +39,7 @@ object GetTaxiDuration {
 
         yellowEvents.columns
         yellowEvents.show()
-        yellowEvents.cache()
+        //yellowEvents.cache()
 
         print (">>>>>>>>>> RENAME COLUMNS (avoid contains invalid character(s) among error)")
 
@@ -55,7 +55,7 @@ object GetTaxiDuration {
         print (">>>>>>>>>> SAVE OUTPUT  (parquet)")
 
         yellowEvents_.repartition(1)
-        .select("vendor_id_", 
+        .select("vendor_id", 
                 "pickup_datetime_", 
                 "dropoff_datetime_", 
                 "pickup_longitude_", 
