@@ -20,7 +20,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS nyc_taxi_tlc.preprocessed_green_trip (
   `tolls_amount` DOUBLE,
   `improvement_surcharge` DOUBLE,
   `total_amount` DOUBLE,
-  `payment_type` string,
+  `payment_type` INT,
   `trip_year` string
 ) PARTITIONED BY (
   trip_month string 
