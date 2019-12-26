@@ -43,18 +43,18 @@ object GetTaxiDuration {
 
         print (">>>>>>>>>> RENAME COLUMNS (avoid contains invalid character(s) among error)")
 
-        var yellowEvents_ = yellowEvents.withColumnRenamed("vendor_id", "vendor_id_")
+        var yellowEvents_ = yellowEvents.withColumnRenamed(" vendor_id", "vendor_id_")
                                     .withColumnRenamed(" pickup_datetime", "pickup_datetime_")
                                     .withColumnRenamed(" dropoff_datetime", "dropoff_datetime_")
                                     .withColumnRenamed(" pickup_longitude", "pickup_longitude_")
                                     .withColumnRenamed(" pickup_latitude", "pickup_latitude_")
-                                    .withColumnRenamed(" dropoff_longitude", " dropoff_longitude_")
+                                    .withColumnRenamed(" dropoff_longitude", "dropoff_longitude_")
                                     .withColumnRenamed(" dropoff_latitude", "dropoff_latitude_")
                                     .withColumnRenamed(" trip_distance", "trip_distance_")
 
         print (">>>>>>>>>> SAVE OUTPUT  (parquet)")
 
-        yellowEvents.repartition(1)
+        yellowEvents_.repartition(1)
         .select("vendor_id_", 
                 "pickup_datetime_", 
                 "dropoff_datetime_", 
