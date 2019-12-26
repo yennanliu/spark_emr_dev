@@ -37,17 +37,37 @@ object GetTaxiDuration {
           .withColumn("minute_rate",$" trip_distance".divide($"duration") * 60)
           .withColumnRenamed("pickup_datetime","pickup_datetime")
 
+        yellowEvents.columns
         yellowEvents.show()
         yellowEvents.cache()
+
+        print (">>>>>>>>>> RENAME COLUMNS (avoid contains invalid character(s) among error)")
+
+        var yellowEvents_ = yellowEvents.withColumnRenamed("vendor_id", "vendor_id_")
+                                    .withColumnRenamed(" pickup_datetime", "pickup_datetime_")
+                                    .withColumnRenamed(" dropoff_datetime", "dropoff_datetime_")
+                                    .withColumnRenamed(" pickup_longitude", "pickup_longitude_")
+                                    .withColumnRenamed(" pickup_latitude", "pickup_latitude_")
+                                    .withColumnRenamed(" dropoff_longitude", " dropoff_longitude_")
+                                    .withColumnRenamed(" dropoff_latitude", "dropoff_latitude_")
+                                    .withColumnRenamed(" trip_distance", "trip_distance_")
 
         print (">>>>>>>>>> SAVE OUTPUT  (parquet)")
 
         yellowEvents.repartition(1)
-        .sortWithinPartitions($" pickup_datetime")
+        .select("vendor_id_", 
+                "pickup_datetime_", 
+                "dropoff_datetime_", 
+                "pickup_longitude_", 
+                "pickup_latitude_",
+                "dropoff_longitude_",
+                "dropoff_latitude_",
+                "trip_distance_",
+                "duration",
+                "minute_rate")
         .write
         .mode("OVERWRITE")
-        .partitionBy(" pickup_datetime")
+        .partitionBy("pickup_datetime_")
         .parquet(outout_data + "/allEvents")
-    
                         } 
         }
