@@ -33,16 +33,18 @@ object GetTopPickupZone {
         val yellow_trip_data = sparksession.read.parquet(processed_yellow_trip_data)
         var yellow_trip_data_DF = yellow_trip_data.toDF()
 
-        yellow_trip_data_DF.show()
         println(yellow_trip_data_DF.schema)
 
-        var pickup_location_id_trip_distance = yellow_trip_data_DF.groupBy("pickup_location_id", "trip_distance").count()
+        // pickup_datetime -> pickup_date
+        var yellow_trip_data_DF_ = yellow_trip_data_DF.withColumn("pickup_date", (col("pickup_datetime").cast("date"))) 
+        var pickup_location_id_trip_distance = yellow_trip_data_DF_.groupBy("pickup_date","pickup_location_id", "trip_distance").count()
         pickup_location_id_trip_distance.show()
 
         print (">>>>>>>>>> SAVE OUTPUT  (csv)")
         pickup_location_id_trip_distance.write
                                         .format("csv")
                                         .mode("OVERWRITE")
+                                        .partitionBy("pickup_date")
                                         .save(output_filename)
      
                         } 
