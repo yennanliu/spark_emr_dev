@@ -26,7 +26,8 @@ object GetTopPickupZone {
         var zone_data = "s3a://nyc-tlc-taxi/zone/taxi+_zone_lookup.csv"
 
         // sample dataset
-        var processed_yellow_trip_data = "s3a://nyc-tlc-taxi/scala_etl_output/PreProcessYellowTaxiTrip/trip_year=2009/trip_month=01/*.parquet" 
+        //var processed_yellow_trip_data = "s3a://nyc-tlc-taxi/scala_etl_output/PreProcessYellowTaxiTrip/trip_year=2009/trip_month=01/*.parquet" 
+        var processed_yellow_trip_data = "s3a://nyc-tlc-taxi/scala_etl_output/PreProcessYellowTaxiTrip/trip_year=2009/*/*.parquet" 
         var output_filename = "s3a://nyc-tlc-taxi/scala_etl_output/scala_etl_output/GetTopPickupZone" 
 
 
