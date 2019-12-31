@@ -33,7 +33,7 @@ TBLPROPERTIES (
 
 -- INSERT BACK TO S3 
 
-INSERT OVERWRITE directory 's3://nyc-tlc-taxi/yellow_trip/hive_output/yellow_trip/count' 
+INSERT OVERWRITE directory 's3://nyc-tlc-taxi/hive_output/yellow_trip_count_to_s3/' 
 select
 *
 from yellow_trip LIMIT 10;
