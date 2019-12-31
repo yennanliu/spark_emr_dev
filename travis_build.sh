@@ -8,4 +8,4 @@ type=bind,\
 source="$(pwd)"/.,\
 target=/spark_emr_dev \
 -i -t spark_env \
-/bin/bash  -c "cd ../spark-etl-pipeline && sbt clean compile && sbt assembly"
+/bin/bash  -c "cd ../spark_emr_dev && sbt clean compile && sbt assembly"
