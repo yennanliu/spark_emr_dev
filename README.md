@@ -1,6 +1,18 @@
 <h1 align="center">SPARK-EMR-DEV</h1>
 <h4 align="center">demo various data ETL process via AWS EMR </h4>
 
+<p align="center">
+<!--- travis -->
+<a href="https://travis-ci.com/yennanliu/spark_emr_dev"><img src="https://travis-ci.com/yennanliu/spark_emr_dev.svg?branch=master"></a>
+<!--- PR -->
+<a href="https://github.com/yennanliu/spark_emr_dev/pulls"><img src="https://img.shields.io/badge/PRs-welcome-6574cd.svg"></a>
+<!--- notebooks mybinder -->
+<a href="https://mybinder.org/v2/gh/yennanliu/spark_emr_dev/master"><img src="https://mybinder.org/badge_logo.svg"></a>
+<!--- hit count -->
+<a href="http://hits.dwyl.io/yennanliu/spark_emr_dev"><img src="http://hits.dwyl.io/yennanliu/spark_emr_dev.svg"></a>
+</p>
+
+
 ## File structure
 ```
 ├── README.md
