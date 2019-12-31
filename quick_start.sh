@@ -5,6 +5,7 @@ quick_start() {
 
     echo "install_sbt_at_emr : " "bash quick_start.sh  install_sbt_at_emr"
     echo "install_git_at_emr : " "bash quick_start.sh  install_git_at_emr"
+    echo "clone_repo         : " "bash quick_start.sh  clone_repo"
     echo "run_sbt_test       : " "bash quick_start.sh  run_sbt_test"
     echo "run_sbt_compile    : " "bash quick_start.sh  run_sbt_compile"
     echo "run_sbt_run        : " "bash quick_start.sh  run_sbt_run"
@@ -20,21 +21,27 @@ install_sbt_at_emr() {
     set +e
     cd ~ 
     export PATH=$PATH:/opt/sbt/bin
-    if [ -n `which sbt` ]; then 
-            echo "sbt alrady installed"
-            which sbt
-        else
-        cd ~
-        wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz
-        tar xf sbt-0.13.15.tgz
-        sudo mv sbt /opt
-        export PATH=$PATH:/opt/sbt/bin
-        echo "run sbt test..."
-        sbt test
-    fi
+    cd ~
+    wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz
+    tar xf sbt-0.13.15.tgz
+    sudo mv sbt /opt
+    export PATH=$PATH:/opt/sbt/bin
+    echo "run sbt test..."
+    sbt test
     set -e
+    # if [ -n `which sbt` ]; then 
+    #         echo "sbt alrady installed"
+    #         which sbt
+    #     else
+    #     cd ~
+    #     wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz
+    #     tar xf sbt-0.13.15.tgz
+    #     sudo mv sbt /opt
+    #     export PATH=$PATH:/opt/sbt/bin
+    #     echo "run sbt test..."
+    #     sbt test
+    # fi
 }
-
 
 install_git_at_emr(){
 
@@ -48,6 +55,15 @@ install_git_at_emr(){
       protobuf-devel
     set -e
 
+}
+
+clone_repo(){
+
+    cd ~ 
+    git clone https://github.com/yennanliu/spark_emr_dev.git
+    cd spark_emr_dev
+    pwd
+    ls
 }
 
 run_sbt_test() {
