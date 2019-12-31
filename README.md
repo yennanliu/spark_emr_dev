@@ -33,3 +33,5 @@
 
 ## Ref
 
+- https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-build-binaries.html
+
