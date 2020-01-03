@@ -1,3 +1,5 @@
+#!/bin/sh
+
 quick_start() {
 
     echo "### HELP SCRIPT RUN REPO COMMANDS ### "
