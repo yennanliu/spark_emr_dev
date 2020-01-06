@@ -1,0 +1,8 @@
+John,fl,3.9F
+John,wt,3.7F
+John,sp,4.0F
+John,sm,3.8F
+Mary,fl,3.8F
+Mary,wt,3.9F
+Mary,sp,4.0F
+Mary,sm,4.0F
