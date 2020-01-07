@@ -53,3 +53,58 @@ STORE student INTO '/pig_output/' USING PigStorage (',');
 
 # METHOD 2) save to S3
 STORE student INTO 's3://hadoop-etl-dev/pig_output/' USING PigStorage (',');
+
+
+########################
+# FOR EACH
+########################
+
+A = LOAD '/data/a.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+A_ = FOREACH A GENERATE a, b;
+DUMP A;
+
+C = LOAD '/data/c.txt' using PigStorage(',') AS (a:int, b:int, c:int);
+C_ = FOREACH C GENERATE a, b, c, 999;
+DUMP C_;
+DESCRIBE C_;
+
+########################
+# GROUP
+########################
+
+B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+B_group = GROUP B BY a;
+DUMP B_group;
+
+
+########################
+# COUNT
+########################
+
+C = LOAD '/data/c.txt' using PigStorage(',') AS (dates:chararray, catid:int, userid:chararray);
+
+C_tmp_1 = GROUP C ALL;
+
+C_tmp_2 = FOREACH C_tmp_1 GENERATE $1;
+
+C_tmp_3 = FOREACH C_tmp_2 GENERATE COUNT(C);
+
+DUMP C_tmp_2;
+DUMP C_tmp_3;
+
+########################
+# TOTUPLE
+########################
+
+# TOTUPLE : TOTUPLE can transform Fields to Tuples
+
+B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+
+B_TOTUPLE = FOREACH B GENERATE TOTUPLE(a, b), c, d, TOTUPLE(e, f);
+
+DUMP B_TOTUPLE;
+
+
+
+
+
