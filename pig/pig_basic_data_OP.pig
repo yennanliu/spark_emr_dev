@@ -157,9 +157,84 @@ DUMP UNION_A_TMP_B;
 
 DUMP DISTINCT_UNION_A_TMP_B;
 
-
 ########################
 # CROSS
 ########################
 
+A = LOAD '/data/a.txt' using PigStorage(',') AS (a:int, b:int, c:int);
 
+B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+
+D = CROSS B, A;
+
+E = CROSS A, B;
+
+DUMP D;
+
+########################
+# SUM
+########################
+
+D= LOAD '/data/d.txt' using PigStorage(',') AS (owner:chararray, pet_type:chararray, pet_num:int);
+
+B = GROUP D BY owner;
+
+C = FOREACH B GENERATE group, SUM(A.pet_num);
+
+DUMP B;
+
+DUMP C;
+
+########################
+# SIZE
+########################
+
+D = LOAD '/data/d.txt' using PigStorage(',') AS (owner:chararray, pet_type:chararray, pet_num:int);
+
+B = FOREACH D GENERATE SIZE(pet_type);
+
+C = FOREACH D GENERATE SIZE(pet_num);
+
+DUMP B;
+DUMP C;
+
+########################
+# MAX / MIN
+########################
+
+E = LOAD '/teaching/e.txt' using PigStorage(',') AS (name:chararray, session:chararray, gpa:float);
+
+B = GROUP E BY name;
+
+C = FOREACH B GENERATE group, MAX(A.gpa);
+
+C_ = FOREACH B GENERATE group, MIN(A.gpa);
+
+DUMP C;
+DUMP C_;
+
+########################
+# TOBAG
+########################
+
+E = LOAD '/data/e.txt' using PigStorage(',') AS (name:chararray, session:chararray, gpa:float);
+
+B = FOREACH E GENERATE TOBAG(name, gpa);
+
+DUMP B;
+
+########################
+# DIFF
+########################
+
+F = LOAD '/data/f.txt' using PigStorage(',') as (a:int, b:int, c:int, d:int, e:int, f:int, g:int , h:int);
+
+B = FOREACH F GENERATE TOTUPLE(a, b), TOTUPLE(c, d), TOTUPLE(e, f), TOTUPLE(g, h);
+
+C = FOREACH B GENERATE TOBAG($0, $1), TOBAG($2, $3);
+
+D = FOREACH C GENERATE DIFF($0,$1);
+
+DUMP C;
+
+DUMP D;
