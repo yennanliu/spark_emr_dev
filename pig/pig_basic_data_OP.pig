@@ -36,14 +36,6 @@ B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:i
 
 
 ########################
-# FILTER DATA 
-########################
-
-B_ = FILTER B BY (d == 8);
-DUMP B_;
-DESCRIBE B_;
-
-########################
 # STORE DATA 
 ########################
 
@@ -53,6 +45,15 @@ STORE student INTO '/pig_output/' USING PigStorage (',');
 
 # METHOD 2) save to S3
 STORE student INTO 's3://hadoop-etl-dev/pig_output/' USING PigStorage (',');
+
+
+########################
+# FILTER DATA 
+########################
+
+B_ = FILTER B BY (d == 8);
+DUMP B_;
+DESCRIBE B_;
 
 
 ########################
@@ -103,6 +104,11 @@ B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:i
 B_TOTUPLE = FOREACH B GENERATE TOTUPLE(a, b), c, d, TOTUPLE(e, f);
 
 DUMP B_TOTUPLE;
+
+
+########################
+# FLATTEN
+########################
 
 
 
