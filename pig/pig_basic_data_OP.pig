@@ -34,7 +34,6 @@ student = LOAD '/data/student_data.txt'
 
 B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
 
-
 ########################
 # STORE DATA 
 ########################
@@ -46,7 +45,6 @@ STORE student INTO '/pig_output/' USING PigStorage (',');
 # METHOD 2) save to S3
 STORE student INTO 's3://hadoop-etl-dev/pig_output/' USING PigStorage (',');
 
-
 ########################
 # FILTER DATA 
 ########################
@@ -54,7 +52,6 @@ STORE student INTO 's3://hadoop-etl-dev/pig_output/' USING PigStorage (',');
 B_ = FILTER B BY (d == 8);
 DUMP B_;
 DESCRIBE B_;
-
 
 ########################
 # FOR EACH
@@ -74,9 +71,10 @@ DESCRIBE C_;
 ########################
 
 B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
-B_group = GROUP B BY a;
-DUMP B_group;
 
+B_group = GROUP B BY a;
+
+DUMP B_group;
 
 ########################
 # COUNT
@@ -105,12 +103,63 @@ B_TOTUPLE = FOREACH B GENERATE TOTUPLE(a, b), c, d, TOTUPLE(e, f);
 
 DUMP B_TOTUPLE;
 
-
 ########################
 # FLATTEN
 ########################
 
+B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+
+B_tuple = FOREACH B GENERATE TOTUPLE(a, b), c, d, TOTUPLE(e, f);
+
+B_tuple_foreach = FOREACH B_tuple GENERATE FLATTEN($0), c, d, FLATTEN($3);
+
+DUMP B_tuple;
+
+DUMP B_tuple_foreach;
+
+########################
+# ORDER
+########################
+
+B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+
+B_order = ORDER B BY a ASC, d DESC;
+
+DUMP B_order;
+
+########################
+# UNION
+########################
+
+A = LOAD '/data/a.txt' using PigStorage(',') AS (a:int, b:int, c:int);
+
+B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+
+A_B_union = UNION A, B;
+
+DUMP A_B_union;
+
+########################
+# DISTINCT
+########################
+
+A = LOAD '/data/a.txt' using PigStorage(',') AS (a:int, b:int, c:int);
+
+B = LOAD '/data/b.txt' using PigStorage(',') AS (a:int, b:int, c:int, d:int, e:int, f:int);
+
+TMP_B = FOREACH B GENERATE a, b, c;
+
+UNION_A_TMP_B = UNION A, TMP_B;
+
+DISTINCT_UNION_A_TMP_B = DISTINCT UNION_A_TMP_B;
+
+DUMP UNION_A_TMP_B;
+
+DUMP DISTINCT_UNION_A_TMP_B;
 
 
+########################
+# CROSS
+########################
 
 
