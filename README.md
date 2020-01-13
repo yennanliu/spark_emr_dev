@@ -13,6 +13,11 @@
 </p>
 
 
+## Scala Projects 
+* [spark_emr_dev](https://github.com/yennanliu/spark_emr_dev) - Demo of submitting Hadoop ecosystem jobs to AWS EMR
+* [spark-etl-pipeline](https://github.com/yennanliu/spark-etl-pipeline) - Demo of various Spark ETL processes
+* [utility_Scala](https://github.com/yennanliu/utility_Scala) - Scala/Spark programming basic demo 
+
 ## File structure
 ```
 # ├── README.md
@@ -46,4 +51,3 @@
 ## Ref
 
 - https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-build-binaries.html
-
